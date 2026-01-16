@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire Créateur — TakeClip</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --black: #000000;
+            --gray-900: #0a0a0a;
+            --gray-800: #1a1a1a;
+            --gray-medium: #9ca3af;
+            --gray-light: #d1d5db;
+            --white: #ffffff;
+            --blue-industrial: #2E5CFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* FORCE LE FOND NOIR - Correction pour NC360 */
+        html {
+            background: #000000 !important;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black) !important;
+            color: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Wrapper pour garantir le fond noir dans NC360 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 32px;
+        }
+
+        .logo-separator {
+            width: 4px;
+            height: 40px;
+            background: var(--blue-industrial);
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: var(--gray-medium);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-bloc {
+            background: var(--gray-900);
+            border: 1px solid rgba(46, 92, 255, 0.2);
+            padding: 48px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .form-bloc::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--blue-industrial);
+        }
+
+        .bloc-header {
+            margin-bottom: 32px;
+        }
+
+        .bloc-number {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--blue-industrial);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .bloc-title {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .bloc-note {
+            font-size: 14px;
+            color: var(--gray-medium);
+            padding: 12px 16px;
+            background: rgba(46, 92, 255, 0.05);
+            border-left: 3px solid var(--blue-industrial);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 32px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .form-label .required {
+            color: var(--blue-industrial);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 16px;
+            background: var(--gray-800);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--blue-industrial);
+            background: var(--black);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-example {
+            font-size: 13px;
+            color: var(--gray-medium);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: var(--gray-800);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: rgba(46, 92, 255, 0.3);
+            background: var(--black);
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--blue-industrial);
+            cursor: pointer;
+        }
+
+        .radio-option input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--blue-industrial);
+            cursor: pointer;
+        }
+
+        .radio-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 16px;
+        }
+
+        .radio-option.selected {
+            border-color: var(--blue-industrial);
+            background: rgba(46, 92, 255, 0.05);
+        }
+
+        .submit-section {
+            text-align: center;
+            padding: 48px 0;
+        }
+
+        .btn-submit {
+            padding: 20px 60px;
+            background: var(--blue-industrial);
+            color: var(--white);
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-submit:hover {
+            background: #1e4cef;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .warning-message {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #ef4444;
+            padding: 16px;
+            margin-top: 16px;
+            color: #ef4444;
+            font-size: 14px;
+        }
+
+        .warning-message.show {
+            display: block;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 3px solid #22c55e;
+            padding: 20px;
+            margin: 32px 0;
+            color: #22c55e;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid #ef4444;
+            padding: 20px;
+            margin: 32px 0;
+            color: #ef4444;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .form-bloc {
+                padding: 32px 24px;
+            }
+
+            .bloc-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <span>TAKE</span>
+                <div class="logo-separator"></div>
+                <span>CLIP</span>
+            </div>
+            <h1>Questionnaire Créateur</h1>
+            <p>Complète ce questionnaire pour être recontacté par WhatsApp. Toutes les informations sont essentielles pour te proposer une stratégie TakeClip sur-mesure.</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            ✅ <strong>Questionnaire envoyé avec succès !</strong><br>
+            Notre équipe reviendra vers toi par WhatsApp sous 48 heures.
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            ❌ <strong>Une erreur est survenue.</strong><br>
+            Vérifie ta connexion internet et réessaye. Si le problème persiste, contacte-nous directement.
+        </div>
+
+        <form id="creatorForm">
+            <!-- BLOC 1 -->
+            <div class="form-bloc">
+                <div class="bloc-header">
+                    <div class="bloc-number">Bloc 01</div>
+                    <h2 class="bloc-title">Identité & Présence actuelle</h2>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nom / Prénom <span class="required">*</span></label>
+                    <input type="text" class="form-input" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email <span class="required">*</span></label>
+                    <input type="email" class="form-input" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Numéro (WhatsApp) <span class="required">*</span></label>
+                    <input type="tel" class="form-input" name="phone" placeholder="+33 6 12 34 56 78" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Lien(s) vers tes comptes principaux <span class="required">*</span></label>
+                    <input type="text" class="form-input" name="social_links" placeholder="Instagram / TikTok / YouTube" required>
+                    <div class="form-example">Si ton @ est identique sur toutes les plateformes, tu peux le mettre qu'une seule fois.</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Quel est ton type de contenu principal ? <span class="required">*</span></label>
+                    <div class="form-example" style="margin-bottom: 12px;">Tu peux sélectionner plusieurs options</div>
+                    <div class="radio-group">
+                        <div class="radio-option checkbox-option">
+                            <input type="checkbox" id="podcast" name="content_type" value="podcast">
+                            <label for="podcast">Podcast</label>
+                        </div>
+                        <div class="radio-option checkbox-option">
+                            <input type="checkbox" id="lifestyle" name="content_type" value="lifestyle">
+                            <label for="lifestyle">Lifestyle</label>
+                        </div>
+                        <div class="radio-option checkbox-option">
+                            <input type="checkbox" id="interviews" name="content_type" value="interviews">
+                            <label for="interviews">Interviews</label>
+                        </div>
+                        <div class="radio-option checkbox-option">
+                            <input type="checkbox" id="formation" name="content_type" value="formation">
+                            <label for="formation">Formation</label>
+                        </div>
+                        <div class="radio-option checkbox-option">
+                            <input type="checkbox" id="other" name="content_type" value="other">
+                            <label for="other">Autre</label>
+                        </div>
+                    </div>
+                    <input type="text" class="form-input" name="content_type_other" placeholder="Précisez..." style="margin-top: 12px; display: none;" id="otherInput">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Moyenne de vues générées mensuellement <span class="required">*</span></label>
+                    <input type="text" class="form-input" name="monthly_views" placeholder="Ex: 50 000, 200 000, 1M..." required>
+                    <div class="form-example">Estimation globale sur l'ensemble de tes plateformes</div>
+                </div>
+            </div>
+
+            <!-- BLOC 2 -->
+            <div class="form-bloc">
+                <div class="bloc-header">
+                    <div class="bloc-number">Bloc 02 — Le Plus Important</div>
+                    <h2 class="bloc-title">Contenu Disponible</h2>
+                    <div class="bloc-note">👉 TakeClip repose sur l'existant.</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">As-tu du contenu exploitable ? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="content_yes_lot" name="content_available" value="yes_lot" required>
+                            <label for="content_yes_lot">Oui, beaucoup</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="content_yes_some" name="content_available" value="yes_some">
+                            <label for="content_yes_some">Oui, un peu</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="content_no" name="content_available" value="no">
+                            <label for="content_no">Non</label>
+                        </div>
+                    </div>
+                    <div class="warning-message" id="noContentWarning">
+                        ⚠️ TakeClip nécessite du contenu long existant. Sans cela, nous ne pourrons pas avancer ensemble.
+                    </div>
+                </div>
+
+                <div class="form-group" id="longContentGroup" style="display: none;">
+                    <label class="form-label">Décris ton contenu long (où est-il stocké, quel type de contenu) <span class="required">*</span></label>
+                    <textarea class="form-textarea" name="long_content_description" placeholder="Ex : Google Drive, Dropbox, stockage interne — Podcasts, enregistrements de live/call, formations..."></textarea>
+                </div>
+
+                <div class="form-group" id="shortContentGroup" style="display: none;">
+                    <label class="form-label">Décris ton contenu court (où est-il stocké, quel type de contenu) <span class="required">*</span></label>
+                    <textarea class="form-textarea" name="short_content_description" placeholder="Ex : Google Drive, Dropbox, stockage interne — Vidéos format story, lifestyle, vidéos mindset/formation courtes..."></textarea>
+                </div>
+
+                <div class="form-group" id="frequencyGroup" style="display: none;">
+                    <label class="form-label">À quelle fréquence produis-tu ce contenu aujourd'hui ? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="freq_multi" name="content_frequency" value="multi_week">
+                            <label for="freq_multi">Plusieurs fois par semaine</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="freq_once" name="content_frequency" value="once_week">
+                            <label for="freq_once">1 fois par semaine</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="freq_less" name="content_frequency" value="less_week">
+                            <label for="freq_less">Moins d'1 fois par semaine</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="volumeGroup" style="display: none;">
+                    <label class="form-label">Volume estimé de contenu long déjà disponible <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="vol_less5" name="content_volume" value="less_5h">
+                            <label for="vol_less5">Moins de 5 heures</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="vol_5to20" name="content_volume" value="5_20h">
+                            <label for="vol_5to20">5 à 20 heures</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="vol_more20" name="content_volume" value="more_20h">
+                            <label for="vol_more20">Plus de 20 heures</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOC 3 -->
+            <div class="form-bloc">
+                <div class="bloc-header">
+                    <div class="bloc-number">Bloc 03</div>
+                    <h2 class="bloc-title">Objectif Visibilité</h2>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Quel est ton objectif principal avec le short-form ? <span class="required">*</span></label>
+                    <textarea class="form-textarea" name="shortform_objective" placeholder="Ex : omniprésence multiplateforme, développer son personal brand, mettre en avant un business ou un événement..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Aujourd'hui, ta présence short-form est plutôt : <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="presence_none" name="shortform_presence" value="none" required>
+                            <label for="presence_none">Inexistante</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="presence_irregular" name="shortform_presence" value="irregular">
+                            <label for="presence_irregular">Irrégulière</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="presence_active" name="shortform_presence" value="active_unstructured">
+                            <label for="presence_active">Déjà active mais non structurée</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOC 4 -->
+            <div class="form-bloc">
+                <div class="bloc-header">
+                    <div class="bloc-number">Bloc 04</div>
+                    <h2 class="bloc-title">Capacité Opérationnelle</h2>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">As-tu déjà travaillé avec une agence, un freelance ou un monteur pour ton contenu ? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="worked_yes" name="worked_before" value="yes" required>
+                            <label for="worked_yes">Oui</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="worked_no" name="worked_before" value="no">
+                            <label for="worked_no">Non</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="problemGroup" style="display: none;">
+                    <label class="form-label">Si oui, qu'est-ce qui a posé problème selon toi ?</label>
+                    <textarea class="form-textarea" name="problem_description"></textarea>
+                </div>
+            </div>
+
+            <!-- BLOC 5 -->
+            <div class="form-bloc">
+                <div class="bloc-header">
+                    <div class="bloc-number">Bloc 05 — Clé</div>
+                    <h2 class="bloc-title">Budget & Engagement</h2>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Quel budget mensuel es-tu prêt à investir pour une production quotidienne de clips ? <span class="required">*</span></label>
+                    <input type="text" class="form-input" name="budget" placeholder="Montant en €" required>
+                    <div class="form-example">Budget de production et de gestion inclus. Ex : 2 000 €, 5 000 €, 10 000 € / mois</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">À partir de quand souhaites-tu lancer une campagne ? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="start_now" name="start_timing" value="immediately" required>
+                            <label for="start_now">Immédiatement</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="start_month" name="start_timing" value="within_month">
+                            <label for="start_month">Dans le mois</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="start_later" name="start_timing" value="later">
+                            <label for="start_later">Plus tard</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOC FINAL -->
+            <div class="form-bloc">
+                <div class="bloc-header">
+                    <div class="bloc-number">Question Finale — Optionnelle</div>
+                    <h2 class="bloc-title">Information Complémentaire</h2>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Y a-t-il un élément important à connaître avant un éventuel appel ?</label>
+                    <textarea class="form-textarea" name="additional_info"></textarea>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <p style="font-size: 14px; color: var(--gray-medium); margin-bottom: 24px; text-align: center;">
+                    Une fois ta demande envoyée, notre équipe reviendra vers toi par WhatsApp sous 48 heures.
+                </p>
+                <button type="submit" class="btn-submit" id="submitBtn">Envoyer ma demande</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Configuration NC360
+        const NC360_CONFIG = {
+            locationId: 'X9ieFFO936l0up3ogrJB',
+            formId: 'yVa2gXbgT2Kdtp8fQSs5',
+            submitUrl: 'https://services.leadconnectorhq.com/forms/submit'
+        };
+
+        // Radio and Checkbox option selection styling
+        document.querySelectorAll('.radio-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                if (e.target.tagName === 'INPUT') return;
+                
+                const input = this.querySelector('input[type="radio"], input[type="checkbox"]');
+                
+                if (input.type === 'radio') {
+                    const groupName = input.name;
+                    document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+                        r.closest('.radio-option').classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    input.checked = true;
+                } else if (input.type === 'checkbox') {
+                    input.checked = !input.checked;
+                    this.classList.toggle('selected', input.checked);
+                }
+            });
+        });
+        
+        // Handle direct checkbox clicks
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                this.closest('.radio-option').classList.toggle('selected', this.checked);
+            });
+        });
+
+        // Show "Autre" input field for content type
+        document.getElementById('other').addEventListener('change', function() {
+            document.getElementById('otherInput').style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Handle content availability selection
+        document.querySelectorAll('input[name="content_available"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const warning = document.getElementById('noContentWarning');
+                const longContentGroup = document.getElementById('longContentGroup');
+                const shortContentGroup = document.getElementById('shortContentGroup');
+                const frequencyGroup = document.getElementById('frequencyGroup');
+                const volumeGroup = document.getElementById('volumeGroup');
+                const submitBtn = document.getElementById('submitBtn');
+                
+                if (this.value === 'no') {
+                    warning.classList.add('show');
+                    longContentGroup.style.display = 'none';
+                    shortContentGroup.style.display = 'none';
+                    frequencyGroup.style.display = 'none';
+                    volumeGroup.style.display = 'none';
+                    submitBtn.disabled = true;
+                } else if (this.value === 'yes_lot' || this.value === 'yes_some') {
+                    warning.classList.remove('show');
+                    longContentGroup.style.display = 'block';
+                    shortContentGroup.style.display = 'block';
+                    frequencyGroup.style.display = 'block';
+                    volumeGroup.style.display = 'block';
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+
+        // Show problem field if worked before
+        document.querySelectorAll('input[name="worked_before"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const problemGroup = document.getElementById('problemGroup');
+                problemGroup.style.display = this.value === 'yes' ? 'block' : 'none';
+            });
+        });
+
+        // Form submission to NC360
+        document.getElementById('creatorForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Hide previous messages
+            successMessage.classList.remove('show');
+            errorMessage.classList.remove('show');
+            
+            // Disable button during submission
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'ENVOI EN COURS...';
+            
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const data = {};
+                
+                // Convert FormData to object and handle multiple checkboxes
+                formData.forEach((value, key) => {
+                    if (data[key]) {
+                        if (Array.isArray(data[key])) {
+                            data[key].push(value);
+                        } else {
+                            data[key] = [data[key], value];
+                        }
+                    } else {
+                        data[key] = value;
+                    }
+                });
+                
+                // Format checkboxes as comma-separated strings
+                if (Array.isArray(data.content_type)) {
+                    data.content_type = data.content_type.join(', ');
+                }
+                
+                // Prepare NC360 submission payload
+                const payload = {
+                    locationId: NC360_CONFIG.locationId,
+                    formId: NC360_CONFIG.formId,
+                    ...data
+                };
+                
+                // Submit to NC360
+                const response = await fetch(NC360_CONFIG.submitUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok || response.status === 200) {
+                    // Success
+                    successMessage.classList.add('show');
+                    
+                    // Reset form
+                    this.reset();
+                    document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Hide form after success
+                    this.style.display = 'none';
+                    
+                    // Scroll to success message
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                } else {
+                    throw new Error('Submission failed');
+                }
+                
+            } catch (error) {
+                console.error('Erreur lors de la soumission:', error);
+                errorMessage.classList.add('show');
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+    </script>
+</body>
+</html>
