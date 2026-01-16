@@ -608,12 +608,8 @@
     </div>
 
     <script>
-        // Configuration NC360
-        const NC360_CONFIG = {
-            locationId: 'X9ieFFO936l0up3ogrJB',
-            formId: 'yVa2gXbgT2Kdtp8fQSs5',
-            submitUrl: 'https://services.leadconnectorhq.com/forms/submit'
-        };
+        // Configuration Make.com Webhook
+        const WEBHOOK_URL = 'https://hook.eu1.make.com/yfiu9bwoedpgy38gpsgy7lkds931lpp6';
 
         // Radio and Checkbox option selection styling
         document.querySelectorAll('.radio-option').forEach(option => {
@@ -684,7 +680,7 @@
             });
         });
 
-        // Form submission to NC360
+        // Form submission to Make.com
         document.getElementById('creatorForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -724,23 +720,16 @@
                     data.content_type = data.content_type.join(', ');
                 }
                 
-                // Prepare NC360 submission payload
-                const payload = {
-                    locationId: NC360_CONFIG.locationId,
-                    formId: NC360_CONFIG.formId,
-                    ...data
-                };
-                
-                // Submit to NC360
-                const response = await fetch(NC360_CONFIG.submitUrl, {
+                // Submit to Make.com
+                const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(data)
                 });
                 
-                if (response.ok || response.status === 200) {
+                if (response.ok) {
                     // Success
                     successMessage.classList.add('show');
                     
